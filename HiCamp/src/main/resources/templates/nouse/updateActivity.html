@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- 預覽抓出資料, 照片用slideshow顯示? -->
+
+      <!-- 編輯資料按扭 -->
+            <button th:data-actId="${activity.activityNo}"
+              class="my-btn-editBtn btn btn-outline-danger">編輯資料(未做)</button>
+
+
+  <script>
+    let editBtn = document.querySelector('.my-btn-editBtn')
+
+    for (i = 0; i < editBtn.length; i++) {
+      var editListen = editBtn[i].addEventListener('click', function (e) {
+        let actId = this.getAttribute('data-actId');
+        console.log('actId:' + actId);
+        editActivity(actId)
+
+      })
+
+    }
+
+    function editActivity(actId) {
+      let content = document.querySelector(`data-actId='${actId}'`)
+      let body = content.parentNode;
+
+      if (body.childNodes.length <= 10) {
+        const saveAndUpdateButton = document.createElement('button');
+        saveAndUpdateButton.className = 'my-btn-saveBtn btn btn-outline-danger';
+        saveAndUpdateButton.innerHTML = '送出';
+
+        insertAfter(content, saveAndUpdateButton)
+
+        content.setAttribute("contenteditable", "true")
+        content.focus();
+
+        saveAndUpdateButton.addEventListener('click', (e) => {
+          const putObject = {
+            "activityNo": actId,
+            "activityData": content.textContent,
+
+          }
+
+          content.setAttribute('contenteditable', "false")
+          saveAndUpdateButton.remove()
+          makeRequest(putObject)
+
+        }), { once: true }
+
+      }
+
+    }
+
+    function insertAfter(referenceNode, newNode) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling)
+    }
+
+    function makeRequest(json) {
+      axios.put('http://localhost:8080/HiCamp/activity/update', json)
+        .then(res => {
+          console.log('res' + res);
+        })
+        .catch(err => {
+          console.log('err:' + err);
+        })
+    }
+    </script>
+</body>
+</html>

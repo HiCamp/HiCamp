@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Show Pictures Only</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+  查看照片
+</button>
+
+
+<div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullscreenModalLabel">照片預覽</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      
+      <div class="modal-body">
+	<form th:action="@{activityPictures/{activityNo}}" method="get" id="activity">
+	
+
+    <h3>活動照片:</h3>
+      <div class="photo-output">
+      <div th:each="activityPicture : ${activityPictures}">
+      	<h3>活動編號: <span th:text="${activityPictures.activityNo}"></span></h3>
+        <h3>照片編號: <span th:text="${activityPicture.activityPictureNo}"></span></h3>
+        <h3>照片名稱: <span th:text="${activityPicture.activityFileName}"></span></h3>
+        <img width="200px" th:src="@{'/activity/showPictures?activityPictureNo=' + ${activityPicture.activityPictureNo}}" alt="活動照片">
+      </div>
+    </div>
+    
+	</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

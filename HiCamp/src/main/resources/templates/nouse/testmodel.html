@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+</head>
+<body>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">新增活動</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">新增活動(請輸入資料)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+<form th:action="@{/activity/insertData}" method="post" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">活動類型:</label>
+            <input type="text" class="form-control" id="activityType" name="activityType" list="typelist" placeholder="請輸入類型">
+				<datalist id="typelist">
+					<option value="新手專區"></option>
+					<option value="百岳入門"></option>
+					<option value="百岳進階"></option>
+					<option value="長天數縱走"></option>
+					<option value="中級山野營"></option>
+				</datalist>
+          </div>
+          
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">活動名稱:</label>
+            <input type="text" class="form-control" id="activityName" name="activityName" list="namelist" placeholder="請輸入名稱">
+				<datalist id="namelist">
+					<option value="帝王之山~南湖群峰五天四夜"></option>
+					<option value="寶島第一尖~中央尖山四天三夜"></option>
+					<option value="步步驚心~北二段縱走四天三夜"></option>
+					<option value="一生必朝聖: 水鹿大軍圍繞的北三段(能高安東軍)縱走六天五夜"></option>
+					<option value="野外求生體驗營"></option>
+					<option value="新手入門: 七星山"></option>
+					<option value="台版富士山: 苗栗加里山一日單攻"></option>
+				</datalist>
+          </div>
+          
+           <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">活動地點:</label>
+            <input type="text" class="form-control" id="activityLocation" name="activityLocation" list="locationlist" placeholder="請輸入類型">
+			 	<datalist id="locationlist">
+					<option value="太魯閣國家公園"></option>
+					<option value="玉山國家公園"></option>
+					<option value="雪山國家公園"></option>
+					<option value="陽明山國家公園"></option>
+					<option value="奧萬大國家森林遊樂區"></option>
+					<option value="新北市山區"></option>
+				</datalist>
+          </div>
+          
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">活動資訊:</label>
+            <textarea class="form-control" id="activityInfo" name="activityInfo" placeholder="請輸入資訊"></textarea>
+          </div>
+          
+           <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">活動名額:</label>
+            <input type="text" class="form-control" id="activityQuota" name="activityQuota" list="quotalist" placeholder="請輸入名額">
+				<datalist id="quotalist">
+					<option value="30"></option>
+					<option value="40"></option>
+					<option value="50"></option>
+				</datalist>
+          </div>
+          
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">活動價格:</label>
+            <input type="number" class="form-control" id="activityPrice" name="activityPrice" list="Pricelist" placeholder="請輸入價格">
+				<datalist id="Pricelist">
+					<option value="6500"></option>
+					<option value="1600"></option>
+					<option value="12000"></option>
+					<option value="500"></option>
+					<option value="3200"></option>
+					<option value="5000"></option>
+				</datalist>
+          </div>
+          
+          <div>
+          <label for="recipient-name" class="col-form-label">活動照片:</label>
+          <br>
+          <input type="file" name="activityPicture" multiple></input>
+		  </div>
+		  
+	<!--  	  <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">照片名稱:</label>
+            <input type="text" class="form-control" id="activityFileName" name="activityFileName"  placeholder="請輸入檔名">
+          </div>-->
+        
+      </div>
+      <!-- 按鈕功能還沒寫喔! -->
+      <div class="modal-footer">
+      	<input type="submit" value="確定"></input>
+        <button type="button" id="submitData" class="my-submit-data-btn btn btn-secondary" data-bs-dismiss="modal" >確定</button>
+        <button type="button" id="resetData"　class="my-reset-data-btn btn btn-primary" >清除</button>
+        <button type="button" id="fillData"　class="my-filldata-data-btn btn btn-primary" >一鍵輸入</button>
+        <div class="output"></div>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://kit.fontawesome.com/c919345bd6.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/insert.js}"></script>
+<script>
+	function fillData() {
+		document
+				.getElementById('fillData')
+				.addEventListener(
+						'click',
+						function() {
+							document.getElementById('activityType').value = "長天數縱走";
+							document.getElementById('activityName').value = "一生必朝聖: 水鹿大軍圍繞的北三段(能高安東軍)縱走六天五夜";
+							document.getElementById('activityLocation').value = "太魯閣國家公園";
+							document.getElementById('activityInfo').value = "雖然說玉山、雪山是台灣最高的山峰，但是在許多台灣山岳人的心目中，「帝王之山」的封號，恐怕得頒給中央山脈北一段的「南湖大山」，而南湖大山甚至還不是中央山脈最高峰呢。而「南湖大山」能夠有這樣的稱號，得自於其威儀厚重、氣勢偉岸的山型，不管從任何角度、任何距離看過去，南湖大山皆是一派端凝莊嚴之氣象。除此之外，南湖山區並不只有南湖大山這一座山，還有數座高低不等、有著各自獨特性格的山峰，有如眾星拱月般護衛著南湖大山主峰，因此更具帝王之相的意義啦！而除了數座高聳入雲的百岳名峰之外，南湖山區有著台灣最完整多變的冰河地形（如壯麗的上、下圈谷）、台灣唯一的「寒漠」地質、台灣最長的冰封雪季、還有一些世界獨有的原生物種....甚至南湖山區似乎帶著某種鍾靈毓秀的天地靈氣，讓南湖大山成為許多愛山人魂牽夢縈的高山美地，總是一而再、再而三地多次拜訪，有些人認為必須春夏秋冬四季都走過一遍，才算是完整的登過南湖大山。";
+							document.getElementById('activityQuota').value = "35";
+							document.getElementById('activityPrice').value = "12000";
+						});
+	}
+	document.getElementById('fillData').addEventListener('click', fillData);
+	
+		
+	function submitData() {
+		var activityType = document.getElementById('activityType').value;
+		var activityName = document.getElementById('activityName').value;
+		var activityLocation = document.getElementById('activityLocation').value;
+		var activityInfo = document.getElementById('activityInfo').value;
+		var activityQuota = document.getElementById('activityQuota').value;
+		var activityPrice = document.getElementById('activityPrice').value;
+		var activityPicture = document.getElementById('activityPicture');
+		var activityFileName = document.getElementById('activityFileName').value;
+		
+		var data = new FormData();
+			data.append('activityType', activityType);
+			data.append('activityName', activityName);
+			data.append('activityLocation', activityLocation);
+			data.append('activityInfo', activityInfo);
+			data.append('activityQuota', activityQuota);
+			data.append('activityPrice', activityPrice);
+			data.append('activityPicture', activityPicture);
+			data.append('activityFileName', activityFileName);
+		
+		axios.post('http://localhost:8080/HiCamp/activity/insert', data)
+       		 .then(function(response) {
+          		  console.log(response.data);
+      		  })
+       		 .catch(function(error) {
+         		   console.error(error);
+       		 });
+	}
+	
+	function resetData() {
+	
+	
+	
+	
+	}
+	
+	
+</script>
+</body>
+</html>

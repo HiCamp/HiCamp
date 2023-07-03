@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- mobile metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<title>HiCamp</title>
+
+</head>
+
+<body class="dashboard dashboard_1">
+ <div class="full_container">
+  <div class="inner_container">
+   <!-- Sidebar  -->
+   <div th:replace="~{layout/leftbar}"></div>
+   <!-- right content -->
+   <div id="content">
+    <!-- topbar -->
+    <div th:replace="~{layout/topbar}"></div>
+    <!-- end topbar -->
+    <!-- dashboard inner -->
+    <div class="midde_cont">
+     <div class="container-fluid">
+      <div class="row column_title">
+       <div class="col-md-12">
+        <div class="page_title">
+         <h2>活動測試</h2><!-- 這裡不要忘了換 -->
+
+<!-- 新增視窗 -->         
+ <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Insert Data</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  -->      
+        </div>
+       </div>
+      </div>
+      
+      <!-- 改這裡 -->
+       <div class="table" style="width: 90%; margin: 0 auto;">
+      <form th:action="@{activity/showdata}" method="get" name="activity">
+       <table id="example" class="hover"
+        style="width: 100%; font-size: 20px;">
+        <thead>
+         <tr>
+          <th>活動編號</th>
+          <th>活動類型</th>
+          <th>活動名稱</th>
+          <th>活動地點</th>
+          <th>活動資訊</th>
+          <th>活動名額</th>
+          <th>活動價格</th>
+          <th>詳細資料</th>
+          <th>編輯資料</th>
+          <th>刪除資料</th>
+         </tr>
+        </thead>
+        <tbody>
+         <th:block th:each="activity : ${activity}">
+          <tr>
+           <td th:text="${activity.activityNo}"></td>
+           <td th:text="${activity.activityType}"></td>
+           <td th:text="${activity.activityName}"></td>
+           <td th:text="${activity.activityLocation}"></td>
+           <td th:text="${activity.activityInfo}"></td>
+           <td th:text="${activity.activityQuota}"></td>
+           <td th:text="${activity.activityPrice}"></td>
+           <td><button class="btn btn-sm edit">詳細</button></td>
+           <td><button class="btn btn-sm edit">編輯</button></td>
+           <td><button class="btn btn-sm edit">刪除</button></td>
+           </th:block>
+   
+          </tr>
+         </th:block>
+        </tbody>
+        <tfoot>
+         <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+         </tr>
+        </tfoot>
+       </table>
+       </form>
+      </div>
+
+</div>
+
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</body>
+</html>
