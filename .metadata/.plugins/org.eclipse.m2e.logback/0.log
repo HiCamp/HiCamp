@@ -6628,3 +6628,5 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact javax.mail:co
 2023-07-06 13:43:40,522 [Worker-53: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2023-07-06 13:43:40,657 [Worker-53: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Starting Hibernate enhancement for classes on C:\finalproject\workspace\HiCamp\target\classes
 2023-07-06 13:43:40,701 [Worker-53: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\finalproject\workspace\HiCamp\src\test\resources
+2023-07-06 15:21:39,400 [Worker-56: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-07-06 15:21:39,401 [Worker-56: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
