@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- mobile metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<style>
+	.memberInformation{
+		font-size: 20px;
+	}
+	.memberInformation tr{
+		display: block;
+		padding-bottom: 10px;
+	}
+	.td1{
+		width: 110px;
+	}
+	.memberInformation input{
+		width: 350px;
+	}
+	#imgForm{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+	}
+	.imgBox {
+		width: 200px;
+		background-color: #565656;
+		border-radius: 50%;
+		overflow: hidden;
+		position: relative;
+	}
+	.editPhoto{
+		cursor: pointer;
+		position: absolute;
+		bottom: -35px;
+		left: 57px;
+		width: 85px;
+		text-align: center;
+		background-color: white;
+		color: black;
+		font-size: 18px;
+		font-weight: bold;
+		transition: 0.5s;
+	}
+</style>
+<title>HiCamp 登露</title>
+</head>
+
+<body class="dashboard dashboard_1">
+	<div class="full_container">
+		<div class="inner_container">
+			<!-- Sidebar  -->
+			<div th:replace="~{layout/leftbar}"></div>
+			<!-- right content -->
+			<div id="content">
+				<!-- topbar -->
+				<div th:replace="~{layout/topbar}"></div>
+				<!-- end topbar -->
+				<!-- dashboard inner -->
+				<div class="midde_cont">
+					<div class="container-fluid">
+						<div class="row column_title">
+							<div class="col-md-12">
+								<div class="page_title" style="display: flex; align-items: center;">
+									<h2>會員管理</h2>
+								</div>
+							</div>
+						</div>
+
+						<div class="table" style="width: 90%; margin: 0 auto;">
+							
+						</div>
+						
+						<!-- Vertically centered scrollable modal -->
+						
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/hicamp/js/jquery-3.7.0.min.js}"></script>
+	
+<script>
+	$(function(){
+		//紀錄現在點的是哪一個按鈕
+		let button;
+			
+		//把單筆資料放到彈跳視窗
+		$(".edit").click(function(){
+			button = $(this);
+			console.log($(this).closest("tr").find(".memberNo").text())
+			let memberNo = $(this).closest("tr").find(".memberNo").text();
+			$.ajax({
+				url: "http://localhost:8080/HiCamp/searchonemember",
+				type: "get",
+			    data: {
+			    	memberNo: memberNo
+			    },
+				beforeSend: function(xhr) {
+			      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			    },
+			    dataType: "json",
+			    success : function(member) {
+					$("#memberNo").val(member.memberNo).prop("readOnly",
+							true);
+					$("#memberEmail").val(member.memberEmail);
+					$("#memberName").val(member.memberName);
+					$("#memberGender").val(member.memberGender);
+					$("#memberPassword").val(member.memberPassword);
+					$("#memberPhone").val(member.memberPhone);
+					$("#memberAddress").val(member.memberAddress);
+					$("#memberId").val(member.memberId);
+					$("#memberBirthday").val(member.memberBirthday);
+					$("#memberEmergencyContact").val(
+							member.memberEmergencyContact);
+					$("#memberEmergencyPhone").val(
+							member.memberEmergencyPhone);
+					if (member.memberStatus === 1) {
+						  $("#memberStatus").html(`
+						    <option value="1">正常</option>
+				            <option value="0">停權</option>
+				            <option value="2">未驗證</option>
+						  `);
+						}
+					if (member.memberStatus === 0) {
+					  $("#memberStatus").html(`
+			            <option value="0">停權</option>
+					    <option value="1">正常</option>
+			            <option value="2">未驗證</option>
+					  `);
+					}
+					if (member.memberStatus === 2) {
+					  $("#memberStatus").html(`
+			            <option value="2">未驗證</option>
+					    <option value="1">正常</option>
+			            <option value="0">停權</option>
+					  `);
+					}
+					$("#memberImg").attr({"src": "http://localhost:8080/HiCamp/getphoto?memberNo="+(member.memberNo)});
+					$("#memberPhotoNo").val(member.memberNo);
+				}
+			
+			})
+		})
+		
+		//編輯照片的按鈕
+		$(".imgBox").mouseover(function(){
+			$(".editPhoto").css({"bottom":"0px"});
+		});
+		$(".imgBox").mouseout(function(){
+			$(".editPhoto").css({"bottom":"-35px"});
+		})
+		//預覽圖片
+		$(".editPhoto").change(function(){
+		  readURL(this);
+		  $(".updateImgBtn").css({"display": "block"});
+		});
+		function readURL(input){
+		  if(input.files && input.files[0]){
+		    var reader = new FileReader();
+		    reader.onload = function (e) {
+		       $("#memberImg").attr('src', e.target.result);
+		    }
+		    reader.readAsDataURL(input.files[0]);
+		  }
+		}
+		$(".updateImgBtn").click(function(){
+			$(this).css({"display": "none"});
+		})
+		
+		//送出修改資料
+		$(".submit").click(function(){
+			let memberNo = $("#memberNo").val();
+			let memberEmail = $("#memberEmail").val();
+			let memberName = $("#memberName").val();
+			let memberGender = $("#memberGender").val();
+			let memberPassword = $("#memberPassword").val();
+			let memberPhone = $("#memberPhone").val();
+			let memberAddress = $("#memberAddress").val();
+			let memberId = $("#memberId").val();
+			let memberBirthday = $("#memberBirthday").val();
+			let memberEmergencyContact = $("#memberEmergencyContact").val();
+			let memberEmergencyPhone = $("#memberEmergencyPhone").val();
+			
+			let memberStatus = $("#memberStatus").val();
+			console.log($("#memberStatus").val());
+			
+			let member = {
+				memberNo: memberNo,
+				memberEmail: memberEmail,
+				memberName: memberName,
+				memberGender: memberGender,
+				memberPassword: memberPassword,
+				memberPhone: memberPhone,
+				memberAddress: memberAddress,
+				memberId: memberId,
+				memberBirthday: memberBirthday,
+				memberEmergencyContact: memberEmergencyContact,
+				memberEmergencyPhone: memberEmergencyPhone,
+				memberStatus: memberStatus
+			};
+			
+			let jsonMember = JSON.stringify(member);
+			console.log(jsonMember);
+
+			$.ajax({
+				url: "http://localhost:8080/HiCamp/projectmanagememberupdate",
+				type: "put",
+				data: jsonMember,
+				contentType: "application/json",
+				success: function(updatedMember){
+					console.log(member.memberPassword);
+					button.closest("tr").find(".memberName").text(updatedMember.memberName);
+					button.closest("tr").find(".memberEmail").text(updatedMember.memberEmail);
+					if(updatedMember.memberStatus == 1) {
+						button.closest("tr").find(".memberStatus").text("正常");
+					} else if(updatedMember.memberStatus == 0){
+						button.closest("tr").find(".memberStatus").text("停權");
+					} else if(updatedMember.memberStatus == 2){
+						button.closest("tr").find(".memberStatus").text("未驗證");
+					}
+				 Swal.fire({
+						position: 'top-center',
+						icon: 'success',
+						title: '修改成功',
+						showConfirmButton: false,
+						timer: 2000
+					});
+				}
+			});
+		})
+		
+		$(".updateImgBtn").click(function(e){
+			e.preventDefault();
+			let form = $("#imgForm")[0];
+			let formDataObject = new FormData(form);
+			console.log(form)
+			$.ajax({
+				url: 'http://localhost:8080/HiCamp/managerinsertphoto',
+				type: 'post',
+				processData: false,
+				contentType: false,
+				data: formDataObject,
+				success: function(response){
+					console.log(response);
+					Swal.fire({
+						position: 'top-center',
+						icon: 'success',
+						title: '修改成功',
+						showConfirmButton: false,
+						timer: 2000
+					});
+				},
+				error: function(){
+					console.log('失敗');
+				}
+			})
+		});
+	})
+</script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+	<script>
+      $(document).ready(function () {
+         $('#example').DataTable();
+      });
+   </script>
+</body>
+</html>

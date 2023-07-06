@@ -1,0 +1,9 @@
+1688346970805	Extract local variable 'dateFormat'
+1688347040057	Extract local variable 'signupDate'
+1688347064057	Extract local variable 'formattedDate'
+1688347553536	Copy file
+1688614698363	Extract local variable 'imageString'
+1688614728151	Extract local variable 'imageByte'
+1688614767224	Extract local variable 'bais'
+1688614788567	Extract local variable 'image'
+1688614845616	Extract local variable 'file'
