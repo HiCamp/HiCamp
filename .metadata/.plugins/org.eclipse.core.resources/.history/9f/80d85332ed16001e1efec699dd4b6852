@@ -1,0 +1,5 @@
+package tw.hicamp.member.config;
+
+public class RandomStringGenerator {
+
+}

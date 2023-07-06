@@ -1,0 +1,15 @@
+package tw.hicamp.member.model;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+public interface MemberRepository extends JpaRepository<Member, Integer> {
+	
+	Member findByMemberEmail(String email);
+	
+	@Query(value = "select memberSignupDate from member order by memberSignupDate", nativeQuery = true)
+	List<Member> findByMemberSignupDate();
+
+}

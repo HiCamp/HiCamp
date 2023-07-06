@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- basic -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- mobile metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<style>
+	</style>
+	<title>HiCamp 登露</title>
+</head>
+
+<body class="dashboard dashboard_1">
+	<div class="full_container">
+		<div class="inner_container">
+			<!-- Sidebar  -->
+			<div th:replace="~{layout/leftbar}"></div>
+			<!-- right content -->
+			<div id="content">
+				<!-- topbar -->
+				<div th:replace="~{layout/topbar}"></div>
+				<!-- end topbar -->
+				<!-- dashboard inner -->
+				<div class="midde_cont">
+					<div class="container-fluid">
+						<div class="row column_title">
+							<div class="col-md-12">
+								<div class="page_title" style="display: flex; align-items: center;">
+									<h2>會員管理</h2>
+								</div>
+							</div>
+						</div>
+
+						<div class="table" style="width: 90%; margin: 0 auto;">
+							<canvas id="myChart"></canvas>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/hicamp/js/jquery-3.7.0.min.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		let month = [];
+		let count = [];
+
+		$.ajax({
+			url: "http://localhost:8080/HiCamp/findbysignupdate",
+			type: "get",
+			success: function (response) {
+				console.log(response[0].month)
+				response.forEach(function (data) {
+					month.push(data.month + "月");
+					count.push(data.count);
+				})
+				console.log(month);
+			}
+		});
+
+		const ctx = document.getElementById('myChart');
+
+		new Chart(ctx, {
+			data: {
+			 datasets: [{
+				type: 'bar',
+			 	label: 'Bar',
+			 	data: count
+			 },
+			 {
+			 	type: 'line',
+			 	label: 'Line',
+			 	data: count
+			 }],
+			labels: month,
+				//datasets: [{
+					//label: '每月會員註冊量',
+					//data: count,
+					//borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
